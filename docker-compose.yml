@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://user:password@db:5432/messages_db
+    depends_on:
+      - db
+    networks:
+      - my_custom_network
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - "5432:5432"
+    networks:
+      - my_custom_network
+
+networks:
+  my_custom_network:
+    driver: bridge
+
